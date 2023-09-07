@@ -2,22 +2,28 @@ const catchError = require('../utils/catchError');
 const User = require('../models/Users');
 
 const getAll = catchError(async (req, res) => {
-  const Users = await User.findAll();
-  return res.json(Users);
+    const Users = await User.findAll();
+    return res.json(Users);
 });
 
 const create = catchError(async (req, res) => {
-  const { first_name, last_name, email, password, birthday } = req.body;
-  const user = await User.create({ 
-    first_name, last_name, email, password, birthday 
-  });
-  return res.status(201).json(user);
+    const { first_name, last_name, email, password, birthday } = req.body;
+    const user = await User.create({ 
+        first_name, last_name, email, password, birthday 
+    });
+    return res.status(201).json(user);
+});
+
+const getOne = catchError(async(req, res) => {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
+    return res.json(user);
 });
 
 const remove = catchError(async (req, res) => {
-  const { id } = req.params;
-  await ToDo.destroy({ where: { id } });
-  return res.sendStatus(204);
+    const { id } = req.params;
+    await User.destroy({ where: { id } });
+    return res.sendStatus(204);
 });
 
 const update = catchError(async(req, res) => {
@@ -30,8 +36,9 @@ const update = catchError(async(req, res) => {
 })
 
 module.exports = {
-  getAll,
-  create,
-  remove,
-  update
+    getAll,
+    create,
+    getOne,
+    remove,
+    update
 }
